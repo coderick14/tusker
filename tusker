@@ -1,0 +1,112 @@
+#!/bin/bash
+
+HELP_MSG="Tusker : A dead simple todo manager
+
+    Add a new task        : tusker add TASK_DESCRIPTION
+    Mark a task as done   : tusker check TASK_ID
+    Mark a task as undone : tusker uncheck TASK_ID
+    Delete a task         : tusker del TASK_ID
+    Show existing tasks   : tusker show
+"
+
+FILE_DIR="$HOME/.cache/tusker"
+FILE_NAME="$FILE_DIR/tasks.txt"
+TICK='\xE2\x9C\x93'
+CROSS='\xE2\x9D\x8C'
+DELIM='$$$'
+
+function check_args() {
+    if [ $# -eq 1 ] && ([ "$1" = "show" ] || [ "$1" = "help" ]); then
+        return
+    fi
+
+    if [ $# -gt 1 ] && [ "$1" = "add" ]; then
+        return
+    fi
+
+    if [ $# -ne 2 ]; then
+        echo "Not a valid command. Type 'tusker help' for usage."
+        exit
+    fi
+}
+
+function create_file() {
+    mkdir -p $FILE_DIR
+    if [ ! -e "$FILE_NAME" ]; then
+        touch "$FILE_NAME"
+    fi
+}
+
+function add_task() {
+    local task_desc="$1"
+    local current_timestamp=$(date +"%d %B %Y %H:%M:%S")
+    echo -e "$CROSS $DELIM   $task_desc $DELIM  $current_timestamp" >> $FILE_NAME
+}
+
+function delete_task() {
+    local task_id=$1
+    sed -i -e "$task_id""d" $FILE_NAME
+}
+
+function check_task() {
+    local task_id=$1
+    sed -i "$task_id s/^./$TICK/" $FILE_NAME
+}
+
+function uncheck_task() {
+    local task_id=$1
+    sed -i "$task_id s/^./$CROSS/" $FILE_NAME
+}
+
+function show_tasks() {
+    local line_count=$(wc -l $FILE_NAME | awk '{print $1}')
+
+    if [ $line_count -eq 0 ]; then
+        echo "You're all caught up!!"
+        return
+    fi
+
+    nl $FILE_NAME | column -t -s $DELIM
+}
+
+
+function main() { 
+    check_args $@
+    create_file
+
+    local action=$1
+    
+    case $action in 
+        add)
+        shift
+        add_task "$*"
+        echo "Task added"
+        ;;
+    
+        del)
+        delete_task $2
+        echo "Task deleted"
+        ;;
+    
+        check)
+        check_task $2
+        echo "Task marked as done"
+        ;;
+
+        uncheck)
+        uncheck_task $2
+        echo "Task marked as undone"
+        ;;
+    
+        show)
+        show_tasks
+        ;;
+
+        help)
+        echo -n -e "$HELP_MSG"
+        ;;
+
+    esac
+}
+
+main $@
