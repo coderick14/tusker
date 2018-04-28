@@ -15,7 +15,7 @@ TICK='\xE2\x9C\x93'
 CROSS='\xE2\x9D\x8C'
 DELIM='$$$'
 
-function check_args() {
+check_args() {
     if [ $# -eq 1 ] && ([ "$1" = "show" ] || [ "$1" = "help" ]); then
         return
     fi
@@ -25,77 +25,79 @@ function check_args() {
     fi
 
     if [ $# -ne 2 ]; then
-        echo "Not a valid command. Type 'tusker help' for usage."
+        printf "Not a valid command. Type 'tusker help' for usage.\\n"
         exit
     fi
 }
 
-function create_file() {
-    mkdir -p $FILE_DIR
+create_file() {
+    mkdir -p "$FILE_DIR"
     if [ ! -e "$FILE_NAME" ]; then
         touch "$FILE_NAME"
     fi
 }
 
-function add_task() {
-    local task_desc="$1"
-    local current_timestamp=$(date +"%d %B %Y %H:%M:%S")
-    echo -e "$CROSS $DELIM   $task_desc $DELIM  $current_timestamp" >> $FILE_NAME
+add_task() {
+    task_desc="$1"
+    current_timestamp=$(date +"%d %B %Y %H:%M:%S")
+    task_string="$CROSS $DELIM   $task_desc $DELIM  $current_timestamp"
+
+    printf "%b\\n" "$task_string" >> "$FILE_NAME"
 }
 
-function delete_task() {
-    local task_id=$1
-    sed -i -e "$task_id""d" $FILE_NAME
+delete_task() {
+    task_id=$1
+    sed -i -e "$task_id""d" "$FILE_NAME"
 }
 
-function check_task() {
-    local task_id=$1
-    sed -i "$task_id s/^./$TICK/" $FILE_NAME
+check_task() {
+    task_id=$1
+    sed -i "$task_id s/^./$TICK/" "$FILE_NAME"
 }
 
-function uncheck_task() {
-    local task_id=$1
-    sed -i "$task_id s/^./$CROSS/" $FILE_NAME
+uncheck_task() {
+    task_id=$1
+    sed -i "$task_id s/^./$CROSS/" "$FILE_NAME"
 }
 
-function show_tasks() {
-    local line_count=$(wc -l $FILE_NAME | awk '{print $1}')
+show_tasks() {
+    line_count=$(wc -l $FILE_NAME | awk '{print $1}')
 
     if [ $line_count -eq 0 ]; then
-        echo "You're all caught up!!"
+        printf "You're all caught up!!\\n"
         return
     fi
 
-    nl $FILE_NAME | column -t -s $DELIM
+    nl "$FILE_NAME" | column -t -s $DELIM
 }
 
 
-function main() { 
-    check_args $@
+main() { 
+    check_args "$@"
     create_file
 
-    local action=$1
+    action=$1
     
     case $action in 
         add)
         shift
         add_task "$*"
-        echo "Task added"
+        printf "Task added\\n"
         ;;
     
         del)
-        delete_task $2
-        echo "Task deleted"
+        delete_task "$2"
+        printf "Task deleted\\n"
         ;;
     
         check)
-        check_task $2
-        echo "Task marked as done"
+        check_task "$2"
+        printf "Task marked as done\\n"
         ;;
 
         uncheck)
-        uncheck_task $2
-        echo "Task marked as undone"
+        uncheck_task "$2"
+        printf "Task marked as undone\\n"
         ;;
     
         show)
@@ -103,10 +105,14 @@ function main() {
         ;;
 
         help)
-        echo -n -e "$HELP_MSG"
+        printf "%s" "$HELP_MSG"
+        ;;
+        
+        *)
+        echo "Not a valid command. Type 'tusker help' for usage."
         ;;
 
     esac
 }
 
-main $@
+main "$@"
