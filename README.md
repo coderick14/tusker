@@ -1,6 +1,6 @@
 ![Built with love](http://forthebadge.com/images/badges/built-with-love.svg)
 # Tusker
-A dead simple todo manager in *less than 100 lines* of Bash.  
+A dead simple todo manager in *less than 100 lines* of code.  
 For those who live in the terminal.
 
 ### Installation
@@ -57,3 +57,6 @@ Add `tusker show` at the end of your `.bashrc`, `.zshrc` or `config.fish` to get
 
 ### Features and contributions
 `tusker` was written a couple of nights before my semester examination because I kept forgetting the topics that I had skipped. So if you find a bug or you'd like to add a feature, feel free to raise an issue or send a pull request!!
+
+### Note
+I've tried to make the script *POSIX compatible*. However, if you do face an issue regarding that, please raise an issue. Or send a PR *(even better)*!!
