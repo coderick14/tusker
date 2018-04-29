@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 HELP_MSG="Tusker : A dead simple todo manager
 
@@ -11,8 +11,8 @@ HELP_MSG="Tusker : A dead simple todo manager
 
 FILE_DIR="$HOME/.cache/tusker"
 FILE_NAME="$FILE_DIR/tasks.txt"
-TICK='\xE2\x9C\x93'
-CROSS='\xE2\x9D\x8C'
+TICK='✓ '
+CROSS='❌ '
 DELIM='$$$'
 
 check_args() {
@@ -25,7 +25,7 @@ check_args() {
     fi
 
     if [ $# -ne 2 ]; then
-        printf "Not a valid command. Type 'tusker help' for usage.\\n"
+        printf "Not a valid command. Type 'tusker help' for usage.\n"
         exit
     fi
 }
@@ -42,7 +42,7 @@ add_task() {
     current_timestamp=$(date +"%d %B %Y %H:%M:%S")
     task_string="$CROSS $DELIM   $task_desc $DELIM  $current_timestamp"
 
-    printf "%b\\n" "$task_string" >> "$FILE_NAME"
+    printf "%b\n" "$task_string" >> "$FILE_NAME"
 }
 
 delete_task() {
@@ -64,7 +64,7 @@ show_tasks() {
     line_count=$(wc -l $FILE_NAME | awk '{print $1}')
 
     if [ $line_count -eq 0 ]; then
-        printf "You're all caught up!!\\n"
+        printf "You're all caught up!!\n"
         return
     fi
 
@@ -82,22 +82,22 @@ main() {
         add)
         shift
         add_task "$*"
-        printf "Task added\\n"
+        printf "Task added\n"
         ;;
     
         del)
         delete_task "$2"
-        printf "Task deleted\\n"
+        printf "Task deleted\n"
         ;;
     
         check)
         check_task "$2"
-        printf "Task marked as done\\n"
+        printf "Task marked as done\n"
         ;;
 
         uncheck)
         uncheck_task "$2"
-        printf "Task marked as undone\\n"
+        printf "Task marked as undone\n"
         ;;
     
         show)
@@ -109,7 +109,7 @@ main() {
         ;;
         
         *)
-        echo "Not a valid command. Type 'tusker help' for usage."
+        printf "Not a valid command. Type 'tusker help' for usage.\n"
         ;;
 
     esac
