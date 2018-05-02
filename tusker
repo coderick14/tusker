@@ -1,6 +1,15 @@
 #!/bin/sh
 
-HELP_MSG="Tusker : A dead simple todo manager
+# Author : Deep Bhattacharyya (https://github.com/coderick14)
+
+HELP_MSG="
+ _             _             
+ | |_ _   _ ___| | _____ _ __ 
+ | __| | | / __| |/ / _ \ '__|
+ | |_| |_| \__ \   <  __/ |   
+  \__|\__,_|___/_|\_\___|_|   
+
+  A dead simple todo manager
 
     Add a new task        : tusker add TASK_DESCRIPTION
     Mark a task as done   : tusker check TASK_ID
