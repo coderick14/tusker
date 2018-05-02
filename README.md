@@ -43,6 +43,12 @@ tusker show
      2	❌      Fill rems                        25 April 2018 11:53:25
 ```
 
+- Delete multiple tasks from the list
+```
+tusker del 1 3
+tusker show
+     1	❌      Collect NOC certificate          25 April 2018 11:53:23
+```
 ### What's the difference between `check` and `del`?
 Use `del` if you'd *never* like to look back at a completed task.  
 Use `check` if you want the satisfaction of seeing the ✓  beside your completed task for a while.

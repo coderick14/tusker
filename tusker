@@ -20,7 +20,7 @@ check_args() {
         return
     fi
 
-    if [ $# -gt 1 ] && [ "$1" = "add" ]; then
+    if [ $# -gt 1 ] && ([ "$1" = "add" ] || [ "$1" = "del" ]); then
         return
     fi
 
@@ -46,8 +46,12 @@ add_task() {
 }
 
 delete_task() {
-    task_id=$1
-    sed -i -e "$task_id""d" "$FILE_NAME"
+    format_str=""
+    for task_id in "$@"
+    do
+        format_str="$task_id""d;""$format_str"
+    done
+    sed -i -e "$format_str" "$FILE_NAME"
 }
 
 check_task() {
@@ -86,8 +90,9 @@ main() {
         ;;
     
         del)
-        delete_task "$2"
-        printf "Task deleted\n"
+        shift
+        delete_task "$@"
+        printf "Task(s) deleted\n"
         ;;
     
         check)
