@@ -1,6 +1,6 @@
 ![Built with love](http://forthebadge.com/images/badges/built-with-love.svg)
 # Tusker
-A dead simple todo manager in *less than 100 lines* of code.  
+A dead simple todo manager in about *a hundred lines* of code.  
 For those who live in the terminal.
 
 ### Installation
@@ -19,31 +19,23 @@ tusker show
      2	❌      Collect NOC certificate          25 April 2018 11:53:23
      3	❌      Fill rems                        25 April 2018 11:53:25
 ```
-- Mark a task as done
+- Mark one or more tasks as done
 ```
-tusker check 1
+tusker check 1 3
 tusker show
      1	✓      Collect laundry                  25 April 2018 11:53:21
      2	❌      Collect NOC certificate          25 April 2018 11:53:23
-     3	❌      Fill rems                        25 April 2018 11:53:25
+     3	✓      Fill rems                        25 April 2018 11:53:25
 ```
-- Mark a task as undone
+- Mark one or more tasks as undone
 ```
-tusker uncheck 1
+tusker uncheck 1 3
 tusker show
      1	❌      Collect laundry                  25 April 2018 11:53:21
      2	❌      Collect NOC certificate          25 April 2018 11:53:23
      3	❌      Fill rems                        25 April 2018 11:53:25
 ```
-- Delete a task from the list
-```
-tusker del 2
-tusker show
-     1	❌      Collect laundry                  25 April 2018 11:53:21
-     2	❌      Fill rems                        25 April 2018 11:53:25
-```
-
-- Delete multiple tasks from the list
+- Delete one or more tasks from the list
 ```
 tusker del 1 3
 tusker show

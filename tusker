@@ -20,11 +20,9 @@ check_args() {
         return
     fi
 
-    if [ $# -gt 1 ] && ([ "$1" = "add" ] || [ "$1" = "del" ]); then
+    if [ $# -gt 1 ]; then
         return
-    fi
-
-    if [ $# -ne 2 ]; then
+    else
         printf "Not a valid command. Type 'tusker help' for usage.\n"
         exit
     fi
@@ -55,13 +53,17 @@ delete_task() {
 }
 
 check_task() {
-    task_id=$1
-    sed -i "$task_id s/^./$TICK/" "$FILE_NAME"
+    for task_id in "$@"
+    do
+        sed -i "$task_id s/^./$TICK/" "$FILE_NAME"
+    done
 }
 
 uncheck_task() {
-    task_id=$1
-    sed -i "$task_id s/^./$CROSS/" "$FILE_NAME"
+    for task_id in "$@"
+    do
+        sed -i "$task_id s/^./$CROSS/" "$FILE_NAME"
+    done
 }
 
 show_tasks() {
@@ -96,13 +98,15 @@ main() {
         ;;
     
         check)
-        check_task "$2"
-        printf "Task marked as done\n"
+        shift
+        check_task "$@"
+        printf "Task(s) marked as done\n"
         ;;
 
         uncheck)
-        uncheck_task "$2"
-        printf "Task marked as undone\n"
+        shift
+        uncheck_task "$@"
+        printf "Task(s) marked as undone\n"
         ;;
     
         show)
