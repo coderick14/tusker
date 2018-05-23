@@ -12,7 +12,7 @@ Type `tusker help` to get started.
 ```
 tusker add "The task that I would've forgotten"
 ```
-- Show current tasks *[ID, Status, Description, CreatedAt]*
+- Show current tasks *[ID, Status, Description, UpdatedAt]*
 ```
 tusker show
      1	❌      Collect laundry                  25 April 2018 11:53:21
@@ -34,6 +34,14 @@ tusker show
      1	❌      Collect laundry                  25 April 2018 11:53:21
      2	❌      Collect NOC certificate          25 April 2018 11:53:23
      3	❌      Fill rems                        25 April 2018 11:53:25
+```
+- Edit the description for an existing task
+```
+tusker edit 3 Fill rems and forms
+tusker show
+     1	❌      Collect laundry                  25 April 2018 11:53:21
+     2	❌      Collect NOC certificate          25 April 2018 11:53:23
+     3	❌      Fill rems and forms              25 April 2018 11:53:25
 ```
 - Delete one or more tasks from the list
 ```

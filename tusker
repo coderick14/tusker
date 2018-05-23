@@ -15,6 +15,7 @@ HELP_MSG="
     Mark a task as done   : tusker check TASK_ID
     Mark a task as undone : tusker uncheck TASK_ID
     Delete a task         : tusker del TASK_ID
+    Edit task description : tusker edit TASK_ID NEW_TASK_DESCRIPTION
     Show existing tasks   : tusker show
 "
 
@@ -75,6 +76,15 @@ uncheck_task() {
     done
 }
 
+edit_task() {
+    task_id="$1"
+    shift
+    task_desc="$*"
+    current_timestamp=$(date +"%d %B %Y %H:%M:%S")
+    task_string="$CROSS $DELIM   $task_desc $DELIM  $current_timestamp"
+    sed -i "$task_id s/.*/$task_string/" "$FILE_NAME"
+}
+
 show_tasks() {
     line_count=$(wc -l $FILE_NAME | awk '{print $1}')
 
@@ -98,8 +108,8 @@ main() {
         shift
         add_task "$*"
         printf "Task added\n"
-        ;;
     
+        ;;
         del)
         shift
         delete_task "$@"
@@ -118,6 +128,12 @@ main() {
         printf "Task(s) marked as undone\n"
         ;;
     
+        edit)
+        shift
+        edit_task "$@"
+        printf "Task edited\n"
+        ;;
+
         show)
         show_tasks
         ;;
